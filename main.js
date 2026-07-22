@@ -1,5 +1,6 @@
 const cells = document.querySelectorAll(".game-cell");
 const result = document.querySelector(".result");
+const restart = document.querySelector(".restart");
 const board = (() => {
   function getRandomInt(min, max) {
     const minCeiled = Math.ceil(min);
@@ -14,11 +15,21 @@ const board = (() => {
   ];
 
   const playermove = (row, col) => {
-    board[row][col] = "X";
-    return board;
-  };
+    if (board[row][col] !== " ") {
+      return false;
+    }
 
+    board[row][col] = "X";
+    return true;
+  };
   const getBoard = () => board;
+  const resetBoard = () => {
+    board = [
+      [" ", " ", " "],
+      [" ", " ", " "],
+      [" ", " ", " "],
+    ];
+  };
 
   const aimove = () => {
     let changed = false;
@@ -70,19 +81,45 @@ const board = (() => {
     }
   };
 
-  return { playermove, aimove, checkwin, getBoard };
+  return { playermove, aimove, checkwin, getBoard, resetBoard };
 })();
 cells.forEach((cell) => {
   cell.addEventListener("click", () => {
     const row = Number(cell.dataset.row);
     const col = Number(cell.dataset.col);
-    board.playermove(row, col);
+
+    // Player move
+    const moved = board.playermove(row, col);
+
+    // Don't allow clicking an occupied cell
+    if (!moved) return;
+
     cell.textContent = "X";
-    if (board.checkwin() == "Player 1 Wins") {
-      result.textContent = board.checkwin();
-    }else if(board.checkwin() == "Player 2 Wins"){
-      result.textContent = board.checkwin();
+
+    // Check player win
+    let winner = board.checkwin();
+
+    if (winner) {
+      result.textContent = winner;
+      return;
     }
+
+    // AI move
     board.aimove();
+
+    // Check AI win
+    winner = board.checkwin();
+
+    if (winner) {
+      result.textContent = winner;
+      return;
+    }
   });
 });
+restart.addEventListener("click", () => {
+  board.resetBoard();
+  cells.forEach((cell) => {
+    cell.textContent = " "  
+  });
+   result.textContent = "";
+})

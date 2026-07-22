@@ -1,4 +1,4 @@
-*{
+* {
   background-color: #121314;
   color: purple;
 }
@@ -7,7 +7,7 @@
   height: 100vh;
   grid-template-rows: 1fr 8fr 1fr;
 }
-.header{
+.header {
   display: grid;
   align-content: center;
   justify-content: center;
@@ -19,7 +19,7 @@
   grid-template-rows: 100px 100px 100px;
   grid-template-columns: 100px 100px 100px;
   gap: 1em;
-  background-color: #121314; 
+  background-color: #121314;
 }
 
 .game-cell {
@@ -32,7 +32,7 @@
   font-size: 80px;
   border: 2px solid purple;
 }
-.result{
+.result {
   display: flex;
   justify-content: center;
   align-items: center;
