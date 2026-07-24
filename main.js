@@ -1,45 +1,49 @@
 const cells = document.querySelectorAll(".game-cell");
 const result = document.querySelector(".result");
 const restart = document.querySelector(".restart");
-const board = (() => {
-  function getRandomInt(min, max) {
+class board {
+  getRandomInt(min, max) {
     const minCeiled = Math.ceil(min);
     const maxFloored = Math.floor(max);
     return Math.floor(Math.random() * (maxFloored - minCeiled) + minCeiled);
   }
 
-  let board = [
-    [" ", " ", " "],
-    [" ", " ", " "],
-    [" ", " ", " "],
-  ];
-
-  const playermove = (row, col) => {
-    if (board[row][col] !== " ") {
-      return false;
-    }
-
-    board[row][col] = "X";
-    return true;
-  };
-  const getBoard = () => board;
-  const resetBoard = () => {
-    board = [
+  constructor() {
+    this.board = [
       [" ", " ", " "],
       [" ", " ", " "],
       [" ", " ", " "],
     ];
-  };
+  }
 
-  const aimove = () => {
+  playermove(row, col) {
+    if (this.board[row][col] !== " ") {
+      return false;
+    }
+
+    this.board[row][col] = "X";
+    return true;
+  }
+  getBoard() {
+    return this.board;
+  }
+  resetBoard() {
+    this.board = [
+      [" ", " ", " "],
+      [" ", " ", " "],
+      [" ", " ", " "],
+    ];
+  }
+
+  aimove() {
     let changed = false;
 
     while (changed == false) {
-      let col = getRandomInt(0, 3);
-      let row = getRandomInt(0, 3);
+      let col = this.getRandomInt(0, 3);
+      let row = this.getRandomInt(0, 3);
 
-      if (board[row][col] == " ") {
-        board[row][col] = "O";
+      if (this.board[row][col] == " ") {
+        this.board[row][col] = "O";
         const cell = document.querySelector(
           `[data-row="${row}"][data-col="${col}"]`,
         );
@@ -48,48 +52,79 @@ const board = (() => {
       }
     }
 
-    return board;
-  };
+    return this.board;
+  }
 
-  const checkwin = () => {
+  checkwin() {
     // Player wins (X)
     if (
-      (board[0][0] === "X" && board[0][1] === "X" && board[0][2] === "X") ||
-      (board[1][0] === "X" && board[1][1] === "X" && board[1][2] === "X") ||
-      (board[2][0] === "X" && board[2][1] === "X" && board[2][2] === "X") ||
-      (board[0][0] === "X" && board[1][0] === "X" && board[2][0] === "X") ||
-      (board[0][1] === "X" && board[1][1] === "X" && board[2][1] === "X") ||
-      (board[0][2] === "X" && board[1][2] === "X" && board[2][2] === "X") ||
-      (board[0][0] === "X" && board[1][1] === "X" && board[2][2] === "X") ||
-      (board[0][2] === "X" && board[1][1] === "X" && board[2][0] === "X")
+      (this.board[0][0] === "X" &&
+        this.board[0][1] === "X" &&
+        this.board[0][2] === "X") ||
+      (this.board[1][0] === "X" &&
+        this.board[1][1] === "X" &&
+        this.board[1][2] === "X") ||
+      (this.board[2][0] === "X" &&
+        this.board[2][1] === "X" &&
+        this.board[2][2] === "X") ||
+      (this.board[0][0] === "X" &&
+        this.board[1][0] === "X" &&
+        this.board[2][0] === "X") ||
+      (this.board[0][1] === "X" &&
+        this.board[1][1] === "X" &&
+        this.board[2][1] === "X") ||
+      (this.board[0][2] === "X" &&
+        this.board[1][2] === "X" &&
+        this.board[2][2] === "X") ||
+      (this.board[0][0] === "X" &&
+        this.board[1][1] === "X" &&
+        this.board[2][2] === "X") ||
+      (this.board[0][2] === "X" &&
+        this.board[1][1] === "X" &&
+        this.board[2][0] === "X")
     ) {
       return "Player 1 Wins";
     }
 
     // AI wins (O)
     if (
-      (board[0][0] === "O" && board[0][1] === "O" && board[0][2] === "O") ||
-      (board[1][0] === "O" && board[1][1] === "O" && board[1][2] === "O") ||
-      (board[2][0] === "O" && board[2][1] === "O" && board[2][2] === "O") ||
-      (board[0][0] === "O" && board[1][0] === "O" && board[2][0] === "O") ||
-      (board[0][1] === "O" && board[1][1] === "O" && board[2][1] === "O") ||
-      (board[0][2] === "O" && board[1][2] === "O" && board[2][2] === "O") ||
-      (board[0][0] === "O" && board[1][1] === "O" && board[2][2] === "O") ||
-      (board[0][2] === "O" && board[1][1] === "O" && board[2][0] === "O")
+      (this.board[0][0] === "O" &&
+        this.board[0][1] === "O" &&
+        this.board[0][2] === "O") ||
+      (this.board[1][0] === "O" &&
+        this.board[1][1] === "O" &&
+        this.board[1][2] === "O") ||
+      (this.board[2][0] === "O" &&
+        this.board[2][1] === "O" &&
+        this.board[2][2] === "O") ||
+      (this.board[0][0] === "O" &&
+        this.board[1][0] === "O" &&
+        this.board[2][0] === "O") ||
+      (this.board[0][1] === "O" &&
+        this.board[1][1] === "O" &&
+        this.board[2][1] === "O") ||
+      (this.board[0][2] === "O" &&
+        this.board[1][2] === "O" &&
+        this.board[2][2] === "O") ||
+      (this.board[0][0] === "O" &&
+        this.board[1][1] === "O" &&
+        this.board[2][2] === "O") ||
+      (this.board[0][2] === "O" &&
+        this.board[1][1] === "O" &&
+        this.board[2][0] === "O")
     ) {
       return "Player 2 Wins";
     }
-  };
-
-  return { playermove, aimove, checkwin, getBoard, resetBoard };
-})();
+  }
+}
+const Board = new board();
 cells.forEach((cell) => {
   cell.addEventListener("click", () => {
     const row = Number(cell.dataset.row);
     const col = Number(cell.dataset.col);
 
     // Player move
-    const moved = board.playermove(row, col);
+    const moved = Board.playermove(row, col);
 
     // Don't allow clicking an occupied cell
     if (!moved) return;
@@ -97,7 +132,7 @@ cells.forEach((cell) => {
     cell.textContent = "X";
 
     // Check player win
-    let winner = board.checkwin();
+    let winner = Board.checkwin();
 
     if (winner) {
       result.textContent = winner;
@@ -105,10 +140,10 @@ cells.forEach((cell) => {
     }
 
     // AI move
-    board.aimove();
+    Board.aimove();
 
     // Check AI win
-    winner = board.checkwin();
+    winner = Board.checkwin();
 
     if (winner) {
       result.textContent = winner;
@@ -117,9 +152,9 @@ cells.forEach((cell) => {
   });
 });
 restart.addEventListener("click", () => {
-  board.resetBoard();
+  Board.resetBoard();
   cells.forEach((cell) => {
-    cell.textContent = " "  
+    cell.textContent = " ";
   });
-   result.textContent = "";
-})
+  result.textContent = "";
+});
